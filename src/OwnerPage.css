@@ -1,0 +1,47 @@
+.SignOutButton {
+  position: absolute;
+  right: 100px;
+}
+
+.HomeButton {
+  position: absolute;
+  left: 100px;
+}
+
+h2 {
+  margin-bottom: 25px;
+}
+
+.Actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 25%);
+    justify-content: space-between;
+    justify-items: center;
+    margin-bottom: 25px;
+}
+
+.RejectedButton {
+  background-color: #bbbdbf;
+}
+
+.Rejected {
+  background-color: white;
+  border-radius: 25px;
+  width: 84%;
+  text-align: left;
+  margin: 25px 0px 0px 110px;
+  padding: 5px 0px 5px 0px;
+}
+
+.KeepButton {
+  display: inline-block;
+  position: relative;
+  left: 840px;
+}
+
+.OverrideButton {
+  display: inline-block;
+  position: relative;
+  left: 870px;
+}

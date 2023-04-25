@@ -1,0 +1,57 @@
+.Sections {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 30%);
+    justify-content: center;
+    margin-bottom: -25px;
+}
+
+.Actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 25%);
+    justify-content: space-between;
+    justify-items: center;
+}
+
+.CartButton {
+  position: absolute;
+  right: 270px;
+}
+
+.SignOutButton {
+  position: absolute;
+  right: 100px;
+}
+
+.HomeButton {
+  position: absolute;
+  left: 100px;
+}
+
+.PurchaseButton {
+  background-color: #bbbdbf;
+}
+
+.AddButton {
+  display: inline-block;
+  position: relative;
+  left: 60px;
+  top: -70px;
+}
+
+.Purchase {
+  background-color: white;
+  border-radius: 25px;
+  width: 84%;
+  text-align: left;
+  margin: 25px 0px 0px 110px;
+  padding: 5px 0px 5px 0px;
+}
+
+.ViewButton {
+  display: inline-block;
+  position: relative;
+  left: 1070px;
+  bottom: 70px;
+}
