@@ -1,0 +1,48 @@
+.SignOutButton {
+  position: absolute;
+  right: 100px;
+}
+
+.HomeButton {
+  position: absolute;
+  left: 100px;
+}
+
+.Sections {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 25%);
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.Actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 25%);
+    justify-content: space-between;
+    justify-items: center;
+}
+
+.PendingButton {
+  background-color: #bbbdbf;
+}
+
+.Pending {
+  background-color: white;
+  border-radius: 25px;
+  width: 84%;
+  text-align: left;
+  margin: 25px 0px 0px 110px;
+  padding: 5px 0px 5px 0px;
+}
+
+.ApproveButton {
+  position: relative;
+  left: 970px;
+}
+
+.DenyButton {
+  position: relative;
+  left: 1020px;
+}

@@ -1,0 +1,31 @@
+.HomeButton {
+  position: absolute;
+  left: 100px;
+}
+
+input {
+  width: 30%;
+  padding: 12px 10px;
+  margin: 10px auto 10px auto;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.Form {
+  margin-top: 30px;
+}
+
+.Email{
+  margin-right: 380px;
+}
+
+.Password {
+  margin-right: 355px;
+}
+
+.New {
+  margin-top: 50px;
+}
