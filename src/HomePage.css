@@ -24,7 +24,7 @@
 .Build1, .Build2, .Build3 {
   background-color: white;
   border-radius: 25px;
-  padding: 15px 0px 25px 0px;
+  padding: 5px 0px 10px 0px;
 }
 
 .BuildImage {
@@ -41,4 +41,14 @@
   position: relative;
   right: 600px;
   top: 30px;
+}
+
+.Customize {
+  position: relative;
+  top: 15px;
+}
+
+.CustomizeButton {
+  position: relative;
+  bottom: 15px;
 }

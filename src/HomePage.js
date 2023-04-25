@@ -27,7 +27,7 @@ function HomePage() {
               <h3>Player One</h3>
               <p>H5 Flow RTX 3050 Prebuilt Gaming PC</p>
               <p>Price: $3400.56</p>
-              <button className="CustomizeButton">Customize</button>
+              <button className="DetailsButton">View Details</button>
               <div className="Divider"></div>
               <button className="AddCartButton">Add to cart</button>
             </div>
@@ -37,7 +37,7 @@ function HomePage() {
               <h3>Player Two</h3>
               <p>H5 Elite RTX 3070 Prebuilt Gaming PC</p>
               <p>Price: $4012.45</p>
-              <button className="CustomizeButton">Customize</button>
+              <button className="DetailsButton">View Details</button>
               <div className="Divider"></div>
               <button className="AddCartButton">Add to cart</button>
             </div>
@@ -47,12 +47,16 @@ function HomePage() {
               <h3>Player Three</h3>
               <p>H7 Flow RTX 4070 Ti Prebuilt Gaming PC</p>
               <p>Price: $3201.37</p>
-              <button className="CustomizeButton">Customize</button>
+              <button className="DetailsButton">View Details</button>
               <div className="Divider"></div>
               <button className="AddCartButton">Add to cart</button>
             </div>
 
           </div>
+
+          <h3 className="Customize">Don't see a build that you like? Customize your own!</h3>
+
+          <button className="CustomizeButton">Customize</button>
 
           <h3 className="Business">Suggested Business PCs</h3>
 
