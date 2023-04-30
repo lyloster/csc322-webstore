@@ -1,17 +1,29 @@
-import './All.css'
+import './../All.css'
 import './EmployeePage.css'
-import logo from './webstore_logo.png'
+import logo from './../img/webstore_logo.png'
 
-function EmployeePage() {
+//routing
+import { useNavigate } from 'react-router-dom';
 
+//functions
+import {signout} from '../services/signout';
+
+export function EmployeePage() {
+
+    const navigate = useNavigate();
+  
+    const returnHome = () => {
+      navigate('/');
+    };
+    
   return (
     <div className="EmployeePage">
 
-        <img className="Logo" src={logo}/>
+        <img className="Logo" src={logo} onClick={returnHome}/>
 
-        <button className="SignOutButton">Sign Out</button>
+        <button className="SignOutButton" onClick={signout}>Sign Out</button>
 
-        <button className="HomeButton">Home</button>
+        <button className="HomeButton" onClick={returnHome}>Home</button>
 
         <h2>Jie's Overview</h2>
 
@@ -41,6 +53,7 @@ function EmployeePage() {
 
         <h2>What would you like to view today?</h2>
 
+        {/* TODO: add routing */}
         <div className="Actions">
 
           <button className="PendingButton">Pending Sign Ups</button>
@@ -68,5 +81,3 @@ function EmployeePage() {
 
   );
 }
-
-export default EmployeePage;

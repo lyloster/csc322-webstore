@@ -1,16 +1,30 @@
-import './All.css'
+import './../All.css'
 import './OwnerPage.css'
-import logo from './webstore_logo.png'
+import logo from './../img/webstore_logo.png'
 
-function OwnerPage() {
+//routing
+import { useNavigate } from 'react-router-dom';
+
+//functions
+import { addCompliment } from '../services/addCompliment';
+import { addComplaint} from '../services/addComplaint'
+import { signout } from '../services/signout';
+
+export function OwnerPage() {
+  const navigate = useNavigate();
+
+  const handleClick_Home = () => {
+    navigate('/');
+  };
+
   return (
     <div className="OwnerPage">
 
-        <img className="Logo" src={logo}/>
+        <img className="Logo" src={logo} onClick={handleClick_Home}/>
 
-        <button className="SignOutButton">Sign Out</button>
+        <button className="SignOutButton" onClick={signout}>Sign Out</button>
 
-        <button className="HomeButton">Home</button>
+        <button className="HomeButton" onClick={handleClick_Home}>Home</button>
 
         <h2>Kristina's Overview</h2>
 
@@ -20,9 +34,9 @@ function OwnerPage() {
 
           <button className="RejectedButton">Rejected Sign Ups</button>
 
-          <button>Compliments</button>
+          <button onClick={addCompliment}>Compliments</button>
 
-          <button>Complaints</button>
+          <button onClick={addComplaint}>Complaints</button>
 
         </div>
 
@@ -45,6 +59,3 @@ function OwnerPage() {
 
   );
 }
-
-
-export default OwnerPage;

@@ -1,27 +1,44 @@
-import './All.css'
+import './../All.css'
 import './HomePage.css';
-import logo from './webstore_logo.png';
-import build1 from './Build1.avif';
-import build2 from './Build2.avif';
-import build3 from './Build3.avif';
+import logo from './../img/webstore_logo.png';
+import build1 from './../img/Build1.avif';
+import build2 from './../img/Build2.avif';
+import build3 from './../img/Build3.avif';
+import React from 'react';
 
-function HomePage() {
+//routing
+import { useNavigate } from 'react-router-dom';
+
+//components
+// TODO: use generalized build
+// import { Build } from './components/Build';
+
+export function HomePage() {
+  const navigate = useNavigate();
+
+  const goToSignInPage = () => {
+    navigate('/signin');
+  };
+
+  const goToCartPage = () => {
+    navigate('/cart');
+  };
 
   return (
       <div className="HomePage">
 
           <img className="Logo" src={logo}/>
 
-          <button className="CartButton">Cart</button>
+          <button className="CartButton" onClick={goToCartPage}>Cart</button>
 
-          <button className="SignInButton">Sign In</button>
+          <button className="SignInButton" onClick={goToSignInPage}>Sign In</button>
 
           <h2>Welcome Guest</h2>
 
           <h3 className="Gaming">Suggested Gaming PCs</h3>
 
           <div className="GamingPCs">
-
+            {/* Routing for each component done in generalized Build component */}
             <div className="Build1">
               <img className="BuildImage" src={build1}/>
               <h3>Player One</h3>
@@ -54,9 +71,10 @@ function HomePage() {
 
           </div>
 
+          {/* TODO: decide on Customize */}
           <h3 className="Customize">Don't see a build that you like? Customize your own!</h3>
-
-          <button className="CustomizeButton">Customize</button>
+          {/* TODO: handle forward to build page, not created yet */}
+          <button className="CustomizeButton"> Customize</button>
 
           <h3 className="Business">Suggested Business PCs</h3>
 
@@ -67,5 +85,3 @@ function HomePage() {
       </div>
   );
 }
-
-export default HomePage;

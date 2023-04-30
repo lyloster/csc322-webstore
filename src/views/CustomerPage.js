@@ -1,18 +1,34 @@
-import './All.css'
+import './../All.css'
 import './CustomerPage.css'
-import logo from './webstore_logo.png'
+import logo from './../img/webstore_logo.png'
 
-function CustomerPage() {
+//routing
+import { useNavigate } from 'react-router-dom';
+
+//functions
+import { signout } from '../services/signout';
+
+export function CustomerPage() {
+  const navigate = useNavigate();
+
+  const returnHome = () => {
+    navigate('/');
+  };
+
+  const goToCartPage = () => {
+    navigate('/cart');
+  };
+
   return (
     <div className="CustomerPage">
 
-        <img className="Logo" src={logo}/>
+        <img className="Logo" src={logo} onClick={returnHome}/>
 
-        <button className="CartButton">Cart</button>
+        <button className="CartButton" onClick={goToCartPage}>Cart</button>
 
-        <button className="SignOutButton">Sign Out</button>
+        <button className="SignOutButton" onClick={signout}>Sign Out</button>
 
-        <button className="HomeButton">Home</button>
+        <button className="HomeButton" onClick={returnHome}>Home</button>
 
         <h2>Anthony's Overview</h2>
 
@@ -39,7 +55,7 @@ function CustomerPage() {
         <h2>What would you like to view today?</h2>
 
         <div className="Actions">
-
+          {/* add routing to buttons */}
           <button className="PurchaseButton">Past Purchases</button>
 
           <button>My Suggested Builds</button>
@@ -66,5 +82,3 @@ function CustomerPage() {
 
   );
 }
-
-export default CustomerPage;
