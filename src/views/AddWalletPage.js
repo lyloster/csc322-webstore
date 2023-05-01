@@ -1,17 +1,33 @@
-import './All.css'
+import './../All.css'
 import './AddWalletPage.css'
-import logo from './webstore_logo.png'
+import logo from './../img/webstore_logo.png'
 
-function AddWalletPage() {
+//routing
+import { useNavigate } from 'react-router-dom';
+
+//functions
+import { addToBalance } from '../services/addToBalance';
+
+export function AddWalletPage() {
+  const navigate = useNavigate();
+
+  const returnHome = () => {
+    navigate('/');
+  };
+
+  //TODO: Customer object, to get id, add id to link after implementing Customer object
+  const goToProfilePage = () => {
+    navigate('/customer');
+  };
 
   return (
     <div className="AddWalletPage">
 
-        <img className="Logo" src={logo}/>
+        <img className="Logo" src={logo} onClick={returnHome}/>
 
-        <button className="ProfileButton">Profile</button>
+        <button className="ProfileButton" onClick={goToProfilePage}>Profile</button>
 
-        <button className="HomeButton">Home</button>
+        <button className="HomeButton" onClick={returnHome}>Home</button>
 
         <h2>Add Money to Wallet</h2>
 
@@ -34,7 +50,7 @@ function AddWalletPage() {
 
         </form>
 
-        <button>Add to wallet</button>
+        <button onClick={ addToBalance }>Add to wallet</button>
 
         <p className="Denied">Cannot add money to wallet. Please try again later or contact your bank.</p>
 
@@ -46,5 +62,3 @@ function AddWalletPage() {
 
   );
 }
-
-export default AddWalletPage;

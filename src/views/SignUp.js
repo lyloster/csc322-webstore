@@ -1,14 +1,24 @@
-import './All.css'
+import './../All.css'
 import './SignUp.css';
-import logo from './webstore_logo.png';
+import logo from './../img/webstore_logo.png';
 
-function SignUp() {
+//routing
+import { useNavigate } from 'react-router-dom';
+
+export function SignUp() {
+
+  const navigate = useNavigate();
+
+  const returnHome = () => {
+    navigate('/');
+  };
+
   return (
     <div className="SignUpPage">
 
-        <img className="Logo" src={logo}/>
+        <img className="Logo" src={logo} onClick={returnHome}/>
 
-        <button className="HomeButton">Home</button>
+        <button className="HomeButton" onClick={returnHome}>Home</button>
 
         <h2>Create Account</h2>
 
@@ -29,7 +39,7 @@ function SignUp() {
         <input name="Password" placeholder="Enter your password"/>
 
         <br></br>
-
+        {/* TODO: button is not visible? */}
         <button>Sign Up</button>
 
         <footer>
@@ -40,5 +50,3 @@ function SignUp() {
 
   );
 }
-
-export default SignUp;

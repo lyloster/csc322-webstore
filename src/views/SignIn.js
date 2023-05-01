@@ -1,14 +1,27 @@
-import './All.css'
+import './../All.css';
 import './SignIn.css';
-import logo from './webstore_logo.png';
+import logo from './../img/webstore_logo.png';
 
-function SignIn() {
+//routing
+import { useNavigate } from 'react-router-dom';
+
+//functions
+import {signin} from '../services/signin';
+import {signup} from '../services/signup';
+
+export function SignIn() {
+  const navigate = useNavigate();
+
+  const returnHome = () => {
+    navigate('/');
+  };
+
   return (
     <div className="SignInPage">
 
-        <img className="Logo" src={logo}/>
+        <img className="Logo" src={logo} onClick={returnHome}/>
 
-        <button className="HomeButton">Home</button>
+        <button className="HomeButton" onClick={returnHome}>Home</button>
 
         <h2>Sign In</h2>
 
@@ -27,13 +40,13 @@ function SignIn() {
 
         </form>
 
-        <button>Sign In</button>
+        <button onClick={signin}>Sign In</button>
 
         <div className="New"></div>
 
         <h3>New here? Become a customer today</h3>
 
-        <button>Create an account</button>
+        <button onClick={signup}> Create an account</button>
 
         <footer>
           <p>© 2023 A&K Custom PC</p>
@@ -43,5 +56,3 @@ function SignIn() {
 
   );
 }
-
-export default SignIn;
