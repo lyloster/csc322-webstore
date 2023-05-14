@@ -42,9 +42,11 @@ export function SignUp() {
         {/* TODO: button is not visible? */}
         <button>Sign Up</button>
 
+        {/*
         <footer>
           <p>© 2023 A&K Custom PC</p>
         </footer>
+        */}
 
     </div>
 

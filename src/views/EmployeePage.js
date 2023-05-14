@@ -11,11 +11,11 @@ import {signout} from '../services/signout';
 export function EmployeePage() {
 
     const navigate = useNavigate();
-  
+
     const returnHome = () => {
       navigate('/');
     };
-    
+
   return (
     <div className="EmployeePage">
 
@@ -73,9 +73,11 @@ export function EmployeePage() {
 
         </div>
 
+        {/*
         <footer>
           <p>© 2023 A&K Custom PC</p>
         </footer>
+        */}
 
     </div>
 
