@@ -7,7 +7,7 @@ import { HomePage } from './views/HomePage';
 import { OwnerPage } from './views/OwnerPage';
 import { EmployeePage } from './views/EmployeePage';
 import { CustomerPage } from './views/CustomerPage';
-// TODO: implement Cart page
+import { CartPage } from './views/CartPage';
 // TODO: implement Details page
 import { SignIn } from './views/SignIn';
 import { SignUp } from './views/SignUp';
@@ -17,10 +17,10 @@ function App() {
     return (
       <BrowserRouter>
         <Routes>
-            <Route exact path="/" element={<HomePage/>} />
+            <Route exact path="/:userId?/:buildId?" element={<HomePage/>} />
             <Route path="/signin" element={<SignIn/>} />
             <Route path="/signup" element={<SignUp/>} />
-            {/* <Route path="/cart" element={<CartPage/>} />  */}
+            <Route path="/cart/:userId/:buildIds?/" element={<CartPage/>} /> 
             {/* <Route path="/details/build/:id" element={<DetailsBuildPage/>} />  */}
             {/* TODO: add id in owner, employee, customer, and addBalance pages  after creating the objects*/}
             <Route path="/owner" element={<OwnerPage/>} />

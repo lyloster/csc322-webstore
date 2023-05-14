@@ -1,0 +1,9 @@
+.Build{
+    background-color: white;
+    border-radius: 25px;
+    padding: 5px 0px 10px 0px;
+  }
+  
+  .BuildImage {
+    width: 30%;
+  }
