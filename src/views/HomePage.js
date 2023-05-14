@@ -34,11 +34,16 @@ export function HomePage() {
 
   //build string from all build ids added to cart
   const addToCart = (id) => {
-    //add build id to cart link to use as params
-    //setCartItems is making a callback that passes the previous state of the selected builds, prevItems
-    //...prevItems creates a new array of selected builds and adds the newly selected build id to it
-    setCartItems((prevItems) => [...prevItems, id]);
-    alert("Build added to cart!");
+    //add items to array
+    const updatedItems = [...cartItems, id];
+    //concatinate to print in URL
+    const buildIds = updatedItems.join('_');
+    //add items to array
+    setCartItems(updatedItems);
+    //change URL when button is clicked
+    //user id is hardcoded
+    navigate(`/2/${buildIds}`);
+    // navigate(`/${userId}/${buildIds}`);
   };
 
   //redirect to details page

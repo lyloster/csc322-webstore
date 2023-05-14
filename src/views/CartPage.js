@@ -3,7 +3,7 @@ import './CartPage.css';
 import logo from './../img/webstore_logo.png';
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { Build } from './components/Build';
 import { BuildsInStore} from './components/BuildsInStore';
@@ -17,6 +17,11 @@ export function CartPage() {
   const { userIds, buildIds } = useParams();
   const [total, setTotal] = useState(0);
   const [isEmptyCart, setIsEmptyCart] = useState(false);
+  const navigate = useNavigate();
+  
+  const handleClick_Home = () => {
+    navigate('/');
+  };
 
   //load map with all builds
   const allBuilds = BuildsInStore();
@@ -69,7 +74,7 @@ export function CartPage() {
 
   return (
       <div className="CartPage">
-        <img className="Logo" src={logo}/>
+        <img className="Logo" src={logo} onClick={handleClick_Home}/>
         <h2> Your cart</h2>
 
         <div> {
