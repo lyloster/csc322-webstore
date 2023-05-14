@@ -12,15 +12,19 @@ import { getBuildById } from '../services/getBuildById';
 import { subtractFromWallet} from '../services/subtractFromWallet.js';
 
 export function CartPage() {
+  const { userIds, buildIds } = useParams();
+
   const [userName, setUsername] = useState('');
   const [items, setItems] = useState([]);
-  const { userIds, buildIds } = useParams();
   const [total, setTotal] = useState(0);
   const [isEmptyCart, setIsEmptyCart] = useState(false);
+  const [buildIdsOnReturn, setBuildIdsOnReturn] = useState();
+
   const navigate = useNavigate();
-  
+
+  //persist already added items to cart for user
   const handleClick_Home = () => {
-    navigate('/');
+    navigate(`/2/${buildIdsOnReturn}`);
   };
 
   //load map with all builds
@@ -54,6 +58,7 @@ export function CartPage() {
     setItems(addedItems);
     setTotal(totalPrice.toFixed(2));
     setIsEmptyCart(false);
+    setBuildIdsOnReturn(buildIds);
 
   }, [allBuilds, buildIds]);
 
