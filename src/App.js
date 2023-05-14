@@ -17,7 +17,7 @@ function App() {
     return (
       <BrowserRouter>
         <Routes>
-            <Route exact path="/:userId?/:buildId?" element={<HomePage/>} />
+            <Route exact path="/:userId?/:buildIds?" element={<HomePage/>} />
             <Route path="/signin" element={<SignIn/>} />
             <Route path="/signup" element={<SignUp/>} />
             <Route path="/cart/:userId/:buildIds?/" element={<CartPage/>} /> 

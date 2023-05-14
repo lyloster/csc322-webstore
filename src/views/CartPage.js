@@ -3,7 +3,7 @@ import './CartPage.css';
 import logo from './../img/webstore_logo.png';
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { Build } from './components/Build';
 import { BuildsInStore} from './components/BuildsInStore';
@@ -12,11 +12,20 @@ import { getBuildById } from '../services/getBuildById';
 import { subtractFromWallet} from '../services/subtractFromWallet.js';
 
 export function CartPage() {
+  const { userIds, buildIds } = useParams();
+
   const [userName, setUsername] = useState('');
   const [items, setItems] = useState([]);
-  const { userIds, buildIds } = useParams();
   const [total, setTotal] = useState(0);
   const [isEmptyCart, setIsEmptyCart] = useState(false);
+  const [buildIdsOnReturn, setBuildIdsOnReturn] = useState();
+
+  const navigate = useNavigate();
+
+  //persist already added items to cart for user
+  const handleClick_Home = () => {
+    navigate(`/2/${buildIdsOnReturn}`);
+  };
 
   //load map with all builds
   const allBuilds = BuildsInStore();
@@ -49,6 +58,7 @@ export function CartPage() {
     setItems(addedItems);
     setTotal(totalPrice.toFixed(2));
     setIsEmptyCart(false);
+    setBuildIdsOnReturn(buildIds);
 
   }, [allBuilds, buildIds]);
 
@@ -69,7 +79,7 @@ export function CartPage() {
 
   return (
       <div className="CartPage">
-        <img className="Logo" src={logo}/>
+        <img className="Logo" src={logo} onClick={handleClick_Home}/>
         <h2> Your cart</h2>
 
         <div> {
