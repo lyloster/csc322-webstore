@@ -54,9 +54,11 @@ export function AddWalletPage() {
 
         <p className="Denied">Cannot add money to wallet. Please try again later or contact your bank.</p>
 
+        {/*
         <footer>
           <p>© 2023 A&K Custom PC</p>
         </footer>
+        */}
 
     </div>
 

@@ -78,7 +78,7 @@ export function CartPage() {
                 <div className="card-cart" key={index}>
                     <Build
                         build={item}
-                    /> 
+                    />
                 </div>
                 )
             })
@@ -86,11 +86,14 @@ export function CartPage() {
 
         <div className='total'>Total: ${total}</div>
         <button className="checkout" onClick={() => subtractFromWallet(total)}>Checkout</button>
+
+        {/*
         <footer>
           <p>© 2023 A&K Custom PC</p>
         </footer>
+        */}
 
       </div>
     </div>
-  ); 
+  );
 }

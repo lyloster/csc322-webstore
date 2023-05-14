@@ -16,6 +16,11 @@ export function SignIn() {
     navigate('/');
   };
 
+  const goToSignUpPage = () => {
+    navigate('/SignUp');
+  };
+
+
   return (
     <div className="SignInPage">
 
@@ -46,11 +51,13 @@ export function SignIn() {
 
         <h3>New here? Become a customer today</h3>
 
-        <button onClick={signup}> Create an account</button>
+        <button onClick={goToSignUpPage}> Create an account</button>
 
+        {/*
         <footer>
           <p>© 2023 A&K Custom PC</p>
         </footer>
+        */}
 
     </div>
 

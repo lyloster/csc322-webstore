@@ -87,9 +87,13 @@ export function HomePage() {
       {/* TODO: handle forward to build page, not created yet */}
       <button className="CustomizeButton"> Customize</button>
       <h3 className="Business">Suggested Business PCs</h3>
+
+      {/*
       <footer>
         <p>© 2023 A&K Custom PC</p>
       </footer>
+      */}
+      
     </div>
   );
 }

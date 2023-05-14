@@ -74,9 +74,11 @@ export function CustomerPage() {
 
         </div>
 
+        {/*
         <footer>
           <p>© 2023 A&K Custom PC</p>
         </footer>
+        */}
 
     </div>
 
