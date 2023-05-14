@@ -10,25 +10,13 @@
 
 .Gaming {
   position: relative;
-  right: 600px;
 }
 
 .GamingPCs {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 35%);
-    justify-content: center;
-    margin-bottom: -25px;
-}
-
-.Build1, .Build2, .Build3 {
-  background-color: white;
-  border-radius: 25px;
-  padding: 5px 0px 10px 0px;
-}
-
-.BuildImage {
-  width: 30%;
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  grid-gap: 20px;
+  justify-content: center;
 }
 
 .Divider{
@@ -38,11 +26,8 @@
 }
 
 .Business {
-  position: relative;
-  right: 600px;
-  top: 30px;
+  margin-top: 30px;
 }
-
 .Customize {
   position: relative;
   top: 15px;

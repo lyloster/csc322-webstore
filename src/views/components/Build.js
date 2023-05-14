@@ -1,29 +1,16 @@
-import React from 'react';
+import '../../All.css';
+import './Build.css';
 
-//routing
-import { useNavigate } from 'react-router-dom';
 
-//functions
-import { addToCart} from '../../services/addToCart';
-
-//TODO: create a build object to generalize builds
-export function Build(build){
-    const navigate = useNavigate();
-
-    const goToDetailsPage = () => {
-        navigate('/details/build/:id');
-    };
-
-    return(
-        <div className="Build">
-            <card>
-                <img className="BuildImage" src={build.image}/>
-                <h3>{build.name}</h3>
-                <p>{build.info}</p>
-                <p>{build.price}</p>
-                <button className="DetailsButton" onClick={goToDetailsPage}>View Details</button>
-                <div className="Divider"></div>
-                <button className="AddCartButton" onClick={addToCart}>Add to cart</button>
-            </card>
-        </div>)
+export function Build({build}) {
+  return (
+      <div className="Build">
+        <div className="card">
+        <img className="BuildImage" src={build.img}/>
+        <h3>{build.name}</h3>
+        <p>{build.desc}</p>
+        <p>Price: ${build.price}</p>
+        </div>
+      </div>
+  ); 
 }
