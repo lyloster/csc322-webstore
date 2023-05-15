@@ -37,8 +37,6 @@ export function CustomerPage() {
     navigate('/addBalance');
   };
 
-  // Retrieve the user's name from Firestore
-  const [userName, setUserName] = useState('');
   useEffect(() => {
     const getUserData = async () => {
       const userDocRef = doc(db, "users", user.uid);
