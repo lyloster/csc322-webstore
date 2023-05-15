@@ -12,12 +12,19 @@ import { useParams, useNavigate} from 'react-router-dom';
 import { Build } from './components/Build';
 import { BuildsInStore } from './components/BuildsInStore';
 
+//db
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc } from "firebase/firestore";
+import { getFirestore } from 'firebase/firestore';
+
 export function HomePage() {
   const { userId, buildIds } = useParams();
 
   const [availableBuilds, setAvailableBuilds] = useState([]);
   const [cartItems, setCartItems] = useState();
-
+  const [user, setUser] = useState(null);
+  const [email, setEmail] = useState(userId);
+  const [name, setName] = useState('');
   const navigate = useNavigate();
 
   //redirect to signin
@@ -28,7 +35,7 @@ export function HomePage() {
   //redirect to cart
   const goToCartPage = () => {
     //user id is hardcoded right now
-    navigate(`/cart/2/${cartItems}`);
+    navigate(`/cart/${email}/${cartItems}`);
     // navigate(`/cart/${userId}/${buildIds}`);
   };
 
@@ -38,13 +45,57 @@ export function HomePage() {
     const updatedItems = cartItems ? `${cartItems}_${id}` : `${id}`;
     //set it as a state to persist it
     setCartItems(updatedItems);
-    navigate(`/2/${updatedItems}`);
+    navigate(`/${email}/${updatedItems}`);
   };
 
   //redirect to details page
   const goToDetailsPage = (id) => {
     navigate(`/details/${id}`);
   };
+
+  //start db
+  const auth = getAuth();
+  const db = getFirestore();
+
+  useEffect(() => {
+    // Listen for authentication state changes
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => {
+      // Unsubscribe from the listener when the component unmounts
+      unsubscribe();
+    };
+  }, [auth]);
+
+  useEffect(() => {
+    // Check if the user is authenticated
+    if (!user) {
+      return; // Early return if the user is not authenticated
+    }
+
+    // Retrieve the user's email as id from Firestore
+    const getUserData = async () => {
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        setEmail(userData.email);
+        setName(userData.name);
+      } else {
+        console.log("User not found");
+      }
+    };
+
+    getUserData();
+
+  }, [user, db]);
 
   //load all available builds in the store
   const allBuilds = BuildsInStore();
@@ -65,7 +116,7 @@ export function HomePage() {
       <button className="SignInButton" onClick={goToSignInPage}>
         Sign In
       </button>
-      <h2>Welcome Guest</h2>
+      {name !== '' ? <h2>Welcome {name}</h2> : <h2>Welcome Guest</h2>}
       <h3 className="Gaming">Suggested Gaming PCs</h3>
       <div className="GamingPCs">
         {availableBuilds.map((item, index) => (
