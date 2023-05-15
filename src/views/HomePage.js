@@ -30,7 +30,7 @@ export function HomePage() {
   const [email, setEmail] = useState(userId);
   const [name, setName] = useState('');
   // Object to store comments for each build
-  const [comments, setComments] = useState({}); 
+  const [comments, setComments] = useState({});
 
   const navigate = useNavigate();
 
@@ -48,6 +48,10 @@ export function HomePage() {
     }
     //user id is hardcoded right now
     navigate(`/cart/${email}/${cartItems}`);
+  };
+
+  const goToProfilePage = () => {
+    navigate('/customer');
   };
 
   //build string from all build ids added to cart
@@ -72,7 +76,7 @@ export function HomePage() {
   const handleCommentSubmit = (buildId) => {
     // Get the comment for the specific build
     const comment = comments[buildId] || '';
-    
+
     // Perform any necessary validation on the comment
     if (filter.isProfane(comment)) {
       // Handle offensive language error
@@ -86,7 +90,7 @@ export function HomePage() {
     setComments((prevComments) => ({
       ...prevComments,
       // Set the comment value to an empty string
-      [buildId]: '', 
+      [buildId]: '',
     }));
   };
 
@@ -159,9 +163,9 @@ export function HomePage() {
         Cart
       </button>
       {user ? (
-      <button className="SignInButton" onClick={signout}>
-        Sign Out
-      </button>
+        <button className="ProfileButton" onClick={() => goToProfilePage()}>
+          Profile
+        </button>
     ) : (
       <button className="SignInButton" onClick={goToSignInPage}>
         Sign In
@@ -202,7 +206,7 @@ export function HomePage() {
         <p>© 2023 A&K Custom PC</p>
       </footer>
       */}
-      
+
     </div>
   );
 }
