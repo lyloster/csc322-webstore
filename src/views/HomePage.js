@@ -11,6 +11,7 @@ import { useParams, useNavigate} from 'react-router-dom';
 //components
 import { Build } from './components/Build';
 import { BuildsInStore } from './components/BuildsInStore';
+import { signout } from '../services/signout';
 
 //db
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -34,9 +35,13 @@ export function HomePage() {
 
   //redirect to cart
   const goToCartPage = () => {
+    if (!user) {
+      // User is not logged in, redirect to sign-in page
+      goToSignInPage();
+      return;
+    }
     //user id is hardcoded right now
     navigate(`/cart/${email}/${cartItems}`);
-    // navigate(`/cart/${userId}/${buildIds}`);
   };
 
   //build string from all build ids added to cart
@@ -113,9 +118,15 @@ export function HomePage() {
       <button className="CartButton" onClick={() => goToCartPage()}>
         Cart
       </button>
+      {user ? (
+      <button className="SignInButton" onClick={signout}>
+        Sign Out
+      </button>
+    ) : (
       <button className="SignInButton" onClick={goToSignInPage}>
         Sign In
       </button>
+    )}
       {name !== '' ? <h2>Welcome {name}</h2> : <h2>Welcome Guest</h2>}
       <h3 className="Gaming">Suggested Gaming PCs</h3>
       <div className="GamingPCs">
