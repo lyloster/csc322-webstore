@@ -16,10 +16,6 @@ export function EmployeePage() {
 
     const navigate = useNavigate();
 
-    const returnHome = () => {
-      navigate('/');
-    };
-
     const auth = getAuth();
     const user = auth.currentUser;
     const db = getFirestore();
@@ -92,11 +88,9 @@ export function EmployeePage() {
   return (
     <div className="EmployeePage">
 
-        <img className="Logo" src={logo} onClick={returnHome}/>
+        <img className="Logo" src={logo}/>
 
         <button className="SignOutButton" onClick={signout}>Sign Out</button>
-
-        <button className="HomeButton" onClick={returnHome}>Home</button>
 
         <h2>{name}'s Overview</h2>
 

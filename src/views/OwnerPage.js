@@ -17,10 +17,6 @@ import { signout } from '../services/signout';
 export function OwnerPage() {
   const navigate = useNavigate();
 
-  const handleClick_Home = () => {
-    navigate('/');
-  };
-
   const auth = getAuth();
   const user = auth.currentUser;
   const db = getFirestore();
@@ -73,11 +69,9 @@ export function OwnerPage() {
   return (
     <div className="OwnerPage">
 
-        <img className="Logo" src={logo} onClick={handleClick_Home}/>
+        <img className="Logo" src={logo}/>
 
         <button className="SignOutButton" onClick={signout}>Sign Out</button>
-
-        <button className="HomeButton" onClick={handleClick_Home}>Home</button>
 
         <h2>{name}'s Overview</h2>
 
