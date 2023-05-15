@@ -1,23 +1,29 @@
 import './../All.css'
 import './CustomerPage.css'
 import logo from './../img/webstore_logo.png'
-import { getAuth } from 'firebase/auth';
+import React, { useState, useEffect } from 'react';
+
+//db
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import { doc, getDoc } from "firebase/firestore";
-import React, { useState, useEffect} from 'react';
 import { getFirestore } from 'firebase/firestore';
-
 //routing
 import { useNavigate } from 'react-router-dom';
+
+//components
+import  Loading  from './components/Loading';
 
 //functions
 import { signout } from '../services/signout';
 
+
 export function CustomerPage() {
   const navigate = useNavigate();
 
+  const [user, setUser] = useState(null);
+
   const auth = getAuth();
-  const user = auth.currentUser;
   const db = getFirestore();
 
   const [name, setName] = useState('');
@@ -34,30 +40,54 @@ export function CustomerPage() {
   };
 
   const goToAddBalancePage = () => {
-    navigate('/addBalance');
+    navigate('/customer/addBalance');
   };
 
-  // Retrieve the user's name from Firestore
-  const [userName, setUserName] = useState('');
   useEffect(() => {
+    // Listen for authentication state changes
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => {
+      // Unsubscribe from the listener when the component unmounts
+      unsubscribe();
+    };
+  }, [auth]);
+
+  useEffect(() => {
+    // Check if the user is authenticated
+    if (!user) {
+      return; // Early return if the user is not authenticated
+    }
+
+    // Retrieve the user's name from Firestore
     const getUserData = async () => {
       const userDocRef = doc(db, "users", user.uid);
       const userDocSnap = await getDoc(userDocRef);
+
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
         setName(userData.name);
-        const compliments = userDocSnap.data().compliments;
         setCompliments(userData.compliments);
-        const warnings = userDocSnap.data().warnings;
         setWarnings(userData.warnings);
-        const wallet = userDocSnap.data().wallet;
         setWallet(userData.wallet);
       } else {
         console.log("User not found");
       }
-    }
+    };
+
     getUserData();
-  }, [user]);
+
+  }, [user, db]);
+
+  if (!user) {
+    return <div className='customerPage'><Loading/></div>;
+  }
 
   return (
     <div className="CustomerPage">
