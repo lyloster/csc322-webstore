@@ -1,6 +1,11 @@
 import './../All.css'
 import './CustomerPage.css'
 import logo from './../img/webstore_logo.png'
+import { getAuth } from 'firebase/auth';
+import { auth } from '../firebase';
+import { doc, getDoc } from "firebase/firestore";
+import React, { useState, useEffect} from 'react';
+import { getFirestore } from 'firebase/firestore';
 
 //routing
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +16,15 @@ import { signout } from '../services/signout';
 export function CustomerPage() {
   const navigate = useNavigate();
 
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const db = getFirestore();
+
+  const [name, setName] = useState('');
+  const [compliments, setCompliments] = useState('');
+  const [warnings, setWarnings] = useState('');
+  const [wallet, setWallet] = useState('');
+
   const returnHome = () => {
     navigate('/');
   };
@@ -18,6 +32,32 @@ export function CustomerPage() {
   const goToCartPage = () => {
     navigate('/cart');
   };
+
+  const goToAddBalancePage = () => {
+    navigate('/addBalance');
+  };
+
+  // Retrieve the user's name from Firestore
+  const [userName, setUserName] = useState('');
+  useEffect(() => {
+    const getUserData = async () => {
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        setName(userData.name);
+        const compliments = userDocSnap.data().compliments;
+        setCompliments(userData.compliments);
+        const warnings = userDocSnap.data().warnings;
+        setWarnings(userData.warnings);
+        const wallet = userDocSnap.data().wallet;
+        setWallet(userData.wallet);
+      } else {
+        console.log("User not found");
+      }
+    }
+    getUserData();
+  }, [user]);
 
   return (
     <div className="CustomerPage">
@@ -30,24 +70,24 @@ export function CustomerPage() {
 
         <button className="HomeButton" onClick={returnHome}>Home</button>
 
-        <h2>Anthony's Overview</h2>
+        <h2>{name}'s Overview</h2>
 
         <div className="Sections">
 
           <div className="Compliments">
             <h3>Compliments</h3>
-            <p>1</p>
+            <p>{compliments}</p>
           </div>
 
           <div className="Warnings">
             <h3>Warnings</h3>
-            <p>2</p>
+            <p>{warnings}</p>
           </div>
 
           <div className="Wallet">
             <h3>Wallet</h3>
-            <p>$20.23</p>
-            <button className="AddButton">+</button>
+            <p>${wallet}</p>
+            <button className="AddButton" >+</button>
           </div>
 
         </div>
@@ -56,7 +96,7 @@ export function CustomerPage() {
 
         <div className="Actions">
           {/* add routing to buttons */}
-          <button className="PurchaseButton">Past Purchases</button>
+          <button className="PurchaseButton" onClick={goToAddBalancePage}>Past Purchases</button>
 
           <button>My Suggested Builds</button>
 
