@@ -4,7 +4,7 @@ import logo from './../img/webstore_logo.png';
 import React, { useState, useEffect } from "react";
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
 
 //routing
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +21,7 @@ export function SignIn() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [role, setRole] = useState('');
+  const [status, setStatus] = useState('');
 
   const returnHome = () => {
     navigate('/');
@@ -43,7 +44,7 @@ export function SignIn() {
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
         setRole(userData.role);
-
+        setStatus(userData.application_status);
       } else {
         console.log("User not found");
       }
@@ -56,6 +57,14 @@ export function SignIn() {
       }
       if (role === "employee") {
         navigate("/employee");
+      }
+      if (role === "visitor" && status === "denied") {
+        if (window.confirm("Your application has been denied. Do you want to submit a dispute?")) {
+          const disputeReason = window.prompt("Please enter the reason for your dispute:");
+            if (disputeReason !== null) {
+                await updateDoc(userDocRef, {dispute: disputeReason}, { merge: true });
+            }
+        }
       }
 
     } catch (error) {

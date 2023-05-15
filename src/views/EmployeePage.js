@@ -53,18 +53,24 @@ export function EmployeePage() {
     }, [user]);
 
     const [pendingUsers, setPendingUsers] = useState([]);
+    const [memo, setMemo] = useState("");
+
+    const handleDenyReason = (event) => {
+      setMemo(event.target.value);
+    };
+
+    const getPendingUsers = async () => {
+    const pendingUsersRef = collection(db, "users");
+    const pendingUsersQuery = query(pendingUsersRef, where("application_status", "==", "pending"));
+    const pendingUsersSnapshot = await getDocs(pendingUsersQuery);
+    const pendingUsers = [];
+    pendingUsersSnapshot.forEach((doc) => {
+      pendingUsers.push({ uid: doc.id, ...doc.data() });
+    });
+      setPendingUsers(pendingUsers);
+    };
 
     useEffect(() => {
-      const getPendingUsers = async () => {
-        const pendingUsersRef = collection(db, "users");
-        const pendingUsersQuery = query(pendingUsersRef, where("application_status", "==", "pending"));
-        const pendingUsersSnapshot = await getDocs(pendingUsersQuery);
-        const pendingUsers = [];
-        pendingUsersSnapshot.forEach((doc) => {
-          pendingUsers.push({ uid: doc.id, ...doc.data() });
-        });
-        setPendingUsers(pendingUsers);
-      };
       getPendingUsers();
     }, [db]);
 
@@ -74,6 +80,13 @@ export function EmployeePage() {
         application_status: "approved",
         role: "customer"
       });
+      getPendingUsers();
+    };
+
+    const denyUser = async (userId, memo) => {
+    const userDocRef = doc(db, "users", userId);
+    await updateDoc(userDocRef, {application_status: "denied", memo: memo}, { merge: true });
+      getPendingUsers();
     };
 
   return (
@@ -131,8 +144,12 @@ export function EmployeePage() {
             <p>Visitor Name: {user.name}</p>
             <p>Visitor Email: {user.email}</p>
             <button className="ApproveButton" onClick={() => approveUser(user.uid)}>Approve</button>
-            <button className="DenyButton">Deny</button>
-          </div>
+            <button className="DenyButton" onClick={() => {if (window.confirm("Are you sure you want to deny this application?")) {
+              const denyReason = prompt("Please enter the reason for denial:");
+              if (denyReason !== null) {
+                setMemo(denyReason);
+                denyUser(user.uid, denyReason);}}}}>Deny</button>
+        </div>
         ))}
 
         </div>
