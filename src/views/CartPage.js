@@ -14,7 +14,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 export function CartPage() {
-  //params 
+  //params
   const { userId, buildIds } = useParams();
   //states
   const [email, setEmail] = useState(userId);
@@ -50,7 +50,7 @@ export function CartPage() {
 
     let totalPrice = 0;
     const addedItems = [];
-    
+
     //calculate total price for builds in cart
     for (const id of buildIdsArray) {
         //get build info by id
