@@ -85,9 +85,9 @@ export function CustomerPage() {
 
   }, [user, db]);
 
-  if (!user) {
-    return <div className='customerPage'><Loading/></div>;
-  }
+  // if (!user) {
+  //   return <div className='customerPage'><Loading/></div>;
+  // }
 
   return (
     <div className="CustomerPage">
@@ -117,7 +117,7 @@ export function CustomerPage() {
           <div className="Wallet">
             <h3>Wallet</h3>
             <p>${wallet}</p>
-            <button className="AddButton" >+</button>
+            <button className="AddButton" onClick={goToAddBalancePage}>+</button>
           </div>
 
         </div>
@@ -126,7 +126,7 @@ export function CustomerPage() {
 
         <div className="Actions">
           {/* add routing to buttons */}
-          <button className="PurchaseButton" onClick={goToAddBalancePage}>Past Purchases</button>
+          <button className="PurchaseButton">Past Purchases</button>
 
           <button>My Suggested Builds</button>
 
