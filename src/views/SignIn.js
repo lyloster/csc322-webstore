@@ -1,6 +1,9 @@
 import './../All.css';
 import './SignIn.css';
 import logo from './../img/webstore_logo.png';
+import React, { useState } from "react";
+import {  getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 
 //routing
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +14,7 @@ import {signup} from '../services/signup';
 
 export function SignIn() {
   const navigate = useNavigate();
+  const auth = getAuth();
 
   const returnHome = () => {
     navigate('/');
@@ -20,6 +24,27 @@ export function SignIn() {
     navigate('/SignUp');
   };
 
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  const SignIn = async (e) => {
+      e.preventDefault()
+
+      await signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            console.log(user);
+            navigate("/customer")
+            // ...
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+            // ..
+        });
+    }
 
   return (
     <div className="SignInPage">
@@ -34,18 +59,18 @@ export function SignIn() {
 
           <p className="Email">Email</p>
 
-          <input name="Email" placeholder="Enter your email"/>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email"/>
 
           <p className="Password">Password</p>
 
-          <input name="Password" placeholder="Enter your password"/>
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password"/>
 
           <br></br>
           <br></br>
 
         </form>
 
-        <button onClick={signin}>Sign In</button>
+        <button onClick={SignIn}>Sign In</button>
 
         <div className="New"></div>
 
