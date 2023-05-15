@@ -121,7 +121,7 @@ export function CartPage() {
  // subtract from wallet and refresh cart
  const handleCheckout = () => {
   //get what's left if the purchase is completed
-  const left = (wallet - total).toFixed(2);
+  const left = Number((wallet - total).toFixed(2));
   const db = getFirestore();
   const userDoc = doc(db, "users", user.uid);
 
