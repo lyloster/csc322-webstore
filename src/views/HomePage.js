@@ -18,6 +18,9 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 
+//offensive language f
+import Filter from 'bad-words';
+
 export function HomePage() {
   const { userId, buildIds } = useParams();
 
@@ -26,6 +29,9 @@ export function HomePage() {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState(userId);
   const [name, setName] = useState('');
+  // Object to store comments for each build
+  const [comments, setComments] = useState({}); 
+
   const navigate = useNavigate();
 
   //redirect to signin
@@ -56,6 +62,40 @@ export function HomePage() {
   //redirect to details page
   const goToDetailsPage = (id) => {
     navigate(`/details/${id}`);
+  };
+
+  //create a filter for bad words
+  const filter = new Filter();
+  //custom bad words
+  filter.addWords('stupid', 'incompetent');
+
+  const handleCommentSubmit = (buildId) => {
+    // Get the comment for the specific build
+    const comment = comments[buildId] || '';
+    
+    // Perform any necessary validation on the comment
+    if (filter.isProfane(comment)) {
+      // Handle offensive language error
+      alert('Error: Comment contains offensive language');
+    } else {
+      // No offensive language
+      alert("Comment doesn't contain offensive language!");
+    }
+
+    // Reset the comment for the specific build
+    setComments((prevComments) => ({
+      ...prevComments,
+      // Set the comment value to an empty string
+      [buildId]: '', 
+    }));
+  };
+
+  // Update the comment for a specific build
+  const updateComment = (buildId, value) => {
+    setComments((prevComments) => ({
+      ...prevComments,
+      [buildId]: value,
+    }));
   };
 
   //start db
@@ -140,6 +180,15 @@ export function HomePage() {
             <button className="AddCartButton" onClick={() => addToCart(item.id)}>
               Add to cart
             </button>
+            <div>
+              <input
+                type="text"
+                value={comments[item.id] || ''}
+                onChange={(e) => updateComment(item.id, e.target.value)}
+                placeholder="Add a comment"
+              />
+              <button onClick={() => handleCommentSubmit(item.id)}>Comment</button>
+            </div>
           </div>
         ))}
       </div>
