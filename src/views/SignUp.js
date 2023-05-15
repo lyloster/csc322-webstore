@@ -33,7 +33,7 @@ export function SignUp() {
 
             const db = getFirestore();
             const userDoc = doc(db, "users", user.uid);
-            setDoc(userDoc, { name: name, email: email, role: "customer", application_status: "pending", compliments: 0, warnings: 0, wallet: 0.00 }, { merge: true });
+            setDoc(userDoc, { name: name, email: email, role: "visitor", application_status: "pending", compliments: 0, warnings: 0, wallet: 0.00 }, { merge: true });
 
             navigate("/customer")
             // ...
