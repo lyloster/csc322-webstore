@@ -51,10 +51,6 @@ export function HomePage() {
     navigate(`/cart/${email}/${cartItems}`);
   };
 
-  const goToProfilePage = () => {
-    navigate('/customer');
-  };
-
   //build string from all build ids added to cart
   const addToCart = (id) => {
     //add new id to the build ids string
