@@ -56,14 +56,14 @@ export function EmployeePage() {
     };
 
     const getPendingUsers = async () => {
-    const pendingUsersRef = collection(db, "users");
-    const pendingUsersQuery = query(pendingUsersRef, where("application_status", "==", "pending"));
-    const pendingUsersSnapshot = await getDocs(pendingUsersQuery);
-    const pendingUsers = [];
-    pendingUsersSnapshot.forEach((doc) => {
-      pendingUsers.push({ uid: doc.id, ...doc.data() });
-    });
-      setPendingUsers(pendingUsers);
+      const pendingUsersRef = collection(db, "users");
+      const pendingUsersQuery = query(pendingUsersRef, where("application_status", "==", "pending"));
+      const pendingUsersSnapshot = await getDocs(pendingUsersQuery);
+      const pendingUsers = [];
+      pendingUsersSnapshot.forEach((doc) => {
+        pendingUsers.push({ uid: doc.id, ...doc.data() });
+      });
+        setPendingUsers(pendingUsers);
     };
 
     useEffect(() => {

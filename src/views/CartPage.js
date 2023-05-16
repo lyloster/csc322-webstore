@@ -11,7 +11,7 @@ import { getBuildById } from '../services/getBuildById';
 
 //db
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, updateDoc, setDoc} from 'firebase/firestore';
 
 export function CartPage() {
   //params
@@ -27,6 +27,8 @@ export function CartPage() {
   const [isEmptyCart, setIsEmptyCart] = useState(false);
   const [buildIdsOnReturn, setBuildIdsOnReturn] = useState(buildIds);
   const [isPurchaseComplete, setPurchaseComplete] = useState(false);
+  const [description, setDescription] = useState('');
+
   //routing
   const navigate = useNavigate();
 
@@ -123,23 +125,34 @@ export function CartPage() {
   const left = Number((wallet - total).toFixed(2));
   const db = getFirestore();
   const userDoc = doc(db, "users", user.uid);
+  const buildDoc = doc(db, "builds", user.uid);
 
-  //check if user has enough funds
-  if (left < 0) {
-    alert("You do not have enough funds to complete the purchase!");
-    //add a warning
-    const currentWarning = userData.warnings;
-    //issue a warning
-    updateDoc(userDoc, {warnings: currentWarning + 1}, { merge: true });
-  } else {
-    // Update the wallet balance in the database
-    updateDoc(userDoc, { wallet: left}, { merge: true });
+  const currentDate = new Date();
+  const dateOnly = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
 
-    // Clear the cart items and set the total to zero
-    setItems([]);
-    setTotal(0);
-    setPurchaseComplete(true);
+  if (total == 0) {
+    alert("Your cart is empty. Please add to your cart in order to check out.")
   }
+  else {
+    //check if user has enough funds
+    if (left < 0) {
+      alert("You do not have enough funds to complete the purchase!");
+      //add a warning
+      const currentWarning = userData.warnings;
+      //issue a warning
+      updateDoc(userDoc, {warnings: currentWarning + 1}, { merge: true });
+    } else {
+      // Update the wallet balance in the database
+      updateDoc(userDoc, { wallet: left}, { merge: true });
+      setDoc(buildDoc, { description: items[0].desc, total: total, date: dateOnly.toISOString().slice(0, 10).replace(/-/g, '/') });
+
+      // Clear the cart items and set the total to zero
+      setItems([]);
+      setTotal(0);
+      setPurchaseComplete(true);
+    }
+  }
+
 };
 
 const emptyCartCheck = () => {
@@ -163,11 +176,11 @@ const emptyCartCheck = () => {
 if (isPurchaseComplete) {
   return (
     <div className="CartPage">
+      <button className="HomeButton" onClick={handleClick_Home}>Home</button>
       <img className="Logo" src={logo} onCanPlay={handleClick_Home}/>
       <h2> Your cart</h2>
       <div>
         <h3>Thank you for your purchase, {name} &#x1F600;! </h3>
-        <div className="total">Total: $0.00</div>
       </div>
       <footer>
         <p>© 2023 A&K Custom PC</p>
@@ -178,6 +191,7 @@ if (isPurchaseComplete) {
 
 return (
   <div className="CartPage">
+    <button className="HomeButton" onClick={handleClick_Home}>Home</button>
     <img className="Logo" src={logo} onClick={handleClick_Home} />
     <h2> {name}'s cart</h2>
 
@@ -186,13 +200,14 @@ return (
         return (
           <div className="card-cart" key={index}>
             {item !== null ? <Build build={item} /> : emptyCartCheck() }
-            
+
           </div>
         );
       })}
     </div>
 
     <div className="total">Total: ${total}</div>
+
     <button className="checkout" onClick={handleCheckout}>
       Checkout
     </button>
