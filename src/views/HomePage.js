@@ -66,7 +66,7 @@ export function HomePage() {
   };
 
   const goToProfilePage = () => {
-    navigate(`/${role}/${name}`);
+    navigate(`/customer`);
   }
   //create a filter for bad words
   const filter = new Filter();
@@ -160,15 +160,12 @@ export function HomePage() {
   return (
     <div className="HomePage">
       <img className="Logo" src={logo} />
-      <button className="ProfileButton" onClick={() => goToProfilePage()}>
-        Profile
-      </button>
       <button className="CartButton" onClick={() => goToCartPage()}>
         Cart
       </button>
       {user ? (
-      <button className="SignOutButton" onClick={signout}>
-        Sign Out
+      <button className="ProfileButton" onClick={() => goToProfilePage()}>
+        Profile
       </button>
     ) : (
       <button className="SignInButton" onClick={goToSignInPage}>

@@ -1,25 +1,25 @@
 .SignInButton {
   position: absolute;
-  right: 350px;
-  top: 20px; 
+  right: 100px;
+  top: 20px;
 }
 
 .CartButton {
   position: absolute;
   right: 270px;
-  top: 20px; 
+  top: 20px;
 }
 
 .ProfileButton {
   position: absolute;
-  right: 20px;
-  top: 20px; 
+  right: 100px;
+  top: 20px;
 }
 
 .SignOutButton {
   position: absolute;
   right: 100px;
-  top: 20px; 
+  top: 20px;
 }
 .Gaming {
   position: relative;
