@@ -44,16 +44,6 @@ export function CustomerPage() {
     navigate('/customer/addBalance');
   };
 
-  const signOutUser = () => {
-    signOut(auth).then(() => {
-      // Sign-out successful.
-      navigate('/');
-    }).catch((error) => {
-      // An error happened.
-      console.log(error);
-    });
-  };
-
   useEffect(() => {
     // Listen for authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -102,7 +92,6 @@ export function CustomerPage() {
     const userDocRef = doc(db, "users", user.uid);
     const userDocSnap = await getDoc(userDocRef);
     await updateDoc(userDocRef, { account_status: "closed" }, { merge: true });
-    signOutUser();
   };
 
   if (!isLoading && wallet === 0) {
@@ -115,10 +104,6 @@ export function CustomerPage() {
     closeAccount();
   }
 
-  // if (!user) {
-  //   return <div className='customerPage'><Loading/></div>;
-  // }
-
   return (
     <div className="CustomerPage">
 
@@ -126,7 +111,7 @@ export function CustomerPage() {
 
         <button className="CartButton" onClick={goToCartPage}>Cart</button>
 
-        <button className="SignOutButton" onClick={signOutUser}>Sign Out</button>
+        <button className="SignOutButton" onClick={signout}>Sign Out</button>
 
         <button className="HomeButton" onClick={returnHome}>Home</button>
 
