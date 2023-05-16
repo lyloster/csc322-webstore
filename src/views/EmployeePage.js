@@ -73,6 +73,7 @@ export function EmployeePage() {
     const approveUser = async (userId) => {
       const userDocRef = doc(db, "users", userId);
       await updateDoc(userDocRef, {
+        account_status: "active",
         application_status: "approved",
         role: "customer"
       });
@@ -81,7 +82,7 @@ export function EmployeePage() {
 
     const denyUser = async (userId, memo) => {
     const userDocRef = doc(db, "users", userId);
-    await updateDoc(userDocRef, {application_status: "denied", memo: memo}, { merge: true });
+    await updateDoc(userDocRef, {account_status: "denied", application_status: "denied", memo: memo}, { merge: true });
       getPendingUsers();
     };
 
