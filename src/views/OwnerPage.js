@@ -62,7 +62,7 @@ export function OwnerPage() {
 
   const overrideUser = async (userId) => {
   const userDocRef = doc(db, "users", userId);
-  await updateDoc(userDocRef, {application_status: "approved", role: "customer"});
+  await updateDoc(userDocRef, {account_status: "active", application_status: "approved", role: "customer"});
     getDeniedUsers();
   };
 

@@ -4,9 +4,9 @@ import logo from './../img/webstore_logo.png'
 import React, { useState, useEffect } from 'react';
 
 //db
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 //routing
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +29,8 @@ export function CustomerPage() {
   const [name, setName] = useState('');
   const [compliments, setCompliments] = useState('');
   const [warnings, setWarnings] = useState('');
-  const [wallet, setWallet] = useState('');
+  const [wallet, setWallet] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const returnHome = () => {
     navigate('/');
@@ -41,6 +42,16 @@ export function CustomerPage() {
 
   const goToAddBalancePage = () => {
     navigate('/customer/addBalance');
+  };
+
+  const signOutUser = () => {
+    signOut(auth).then(() => {
+      // Sign-out successful.
+      navigate('/');
+    }).catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
   };
 
   useEffect(() => {
@@ -76,6 +87,7 @@ export function CustomerPage() {
         setCompliments(userData.compliments);
         setWarnings(userData.warnings);
         setWallet(userData.wallet);
+        setIsLoading(false);
       } else {
         console.log("User not found");
       }
@@ -84,6 +96,24 @@ export function CustomerPage() {
     getUserData();
 
   }, [user, db]);
+
+  // Wrap the code block inside an async function
+  const closeAccount = async () => {
+    const userDocRef = doc(db, "users", user.uid);
+    const userDocSnap = await getDoc(userDocRef);
+    await updateDoc(userDocRef, { account_status: "closed" }, { merge: true });
+    signOutUser();
+  };
+
+  if (!isLoading && wallet === 0) {
+    alert("Your wallet cannot be empty. Please add some money.")
+    navigate('/customer/addBalance');
+  }
+
+  if (!isLoading && warnings >= 3) {
+    alert("Your account will be closed due to too many warnings. Please see a store employee in person to complete account closure.");
+    closeAccount();
+  }
 
   // if (!user) {
   //   return <div className='customerPage'><Loading/></div>;
@@ -96,7 +126,7 @@ export function CustomerPage() {
 
         <button className="CartButton" onClick={goToCartPage}>Cart</button>
 
-        <button className="SignOutButton" onClick={signout}>Sign Out</button>
+        <button className="SignOutButton" onClick={signOutUser}>Sign Out</button>
 
         <button className="HomeButton" onClick={returnHome}>Home</button>
 

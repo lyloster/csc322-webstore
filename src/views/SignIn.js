@@ -22,6 +22,7 @@ export function SignIn() {
   const [password, setPassword] = useState(null);
   const [role, setRole] = useState('');
   const [status, setStatus] = useState('');
+  const [accountstatus, setAccountStatus] = useState('');
 
   const returnHome = () => {
     navigate('/');
@@ -45,11 +46,12 @@ export function SignIn() {
         const userData = userDocSnap.data();
         setRole(userData.role);
         setStatus(userData.application_status);
+        setAccountStatus(userData.account_status);
       } else {
         console.log("User not found");
       }
 
-      if (role === "customer") {
+      if (role === "customer" && accountstatus === "open") {
         navigate("/customer");
       }
       if (role === "owner") {
@@ -57,6 +59,12 @@ export function SignIn() {
       }
       if (role === "employee") {
         navigate("/employee");
+      }
+      if (role === "customer" && accountstatus === "closed") {
+        alert("Your account is closed due to too many warnings. Please see a store employee in person to complete account closure.");
+      }
+      if (role === "visitor" && status === "pending") {
+        window.alert('Your application is pending. Please check back later.');
       }
       if (role === "visitor" && status === "denied") {
         if (window.confirm("Your application has been denied. Do you want to submit a dispute?")) {
