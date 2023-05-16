@@ -2,7 +2,7 @@ import './../All.css';
 import './SignIn.css';
 import logo from './../img/webstore_logo.png';
 import React, { useState, useEffect } from "react";
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
 
@@ -30,6 +30,15 @@ export function SignIn() {
 
   const goToSignUpPage = () => {
     navigate('/SignUp');
+  };
+
+  const signOutUser = () => {
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
   };
 
   const handleSignIn = async (e) => {
@@ -62,9 +71,12 @@ export function SignIn() {
       }
       if (role === "customer" && accountstatus === "closed") {
         alert("Your account is closed due to too many warnings. Please see a store employee in person to complete account closure.");
+        signOutUser();
+
       }
       if (role === "visitor" && status === "pending") {
-        window.alert('Your application is pending. Please check back later.');
+        alert('Your application is pending. Please check back later.');
+        signOutUser();
       }
       if (role === "visitor" && status === "denied") {
         if (window.confirm("Your application has been denied. Do you want to submit a dispute?")) {

@@ -2,7 +2,7 @@ import './../All.css'
 import './SignUp.css';
 import React, { useState } from "react";
 import logo from './../img/webstore_logo.png';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
@@ -18,6 +18,15 @@ export function SignUp() {
     navigate('/');
   };
 
+  const signOutUser = () => {
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
+  };
+
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [name, setName] =useState(null)
@@ -29,13 +38,15 @@ export function SignUp() {
         .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            console.log(user);
 
             const db = getFirestore();
             const userDoc = doc(db, "users", user.uid);
-            setDoc(userDoc, { name: name, email: email, role: "visitor", application_status: "pending", compliments: 0, warnings: 0, wallet: 0.00 }, { merge: true });
+            setDoc(userDoc, { name: name, email: email, role: "visitor", application_status: "pending", compliments: 0, warnings: 0, wallet: 0.00 }, { merge: true })
+              .then(() => {
+                  alert('Thanks for signing up with us! We will process your application as soon as possible. Please log in later to see the status.');
+                  signOutUser();
+              });
 
-            navigate("/customer")
             // ...
         })
         .catch((error) => {
@@ -44,6 +55,7 @@ export function SignUp() {
             console.log(errorCode, errorMessage);
             // ..
         });
+
     }
 
   return (
