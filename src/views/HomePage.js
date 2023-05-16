@@ -29,6 +29,7 @@ export function HomePage() {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState(userId);
   const [name, setName] = useState('');
+  const [role, setRole] = useState("visitor");
   // Object to store comments for each build
   const [comments, setComments] = useState({});
 
@@ -68,6 +69,9 @@ export function HomePage() {
     navigate(`/details/${id}`);
   };
 
+  const goToProfilePage = () => {
+    navigate(`/${role}/${name}`);
+  }
   //create a filter for bad words
   const filter = new Filter();
   //custom bad words
@@ -137,6 +141,7 @@ export function HomePage() {
         const userData = userDocSnap.data();
         setEmail(userData.email);
         setName(userData.name);
+        setRole(userData.role);
       } else {
         console.log("User not found");
       }
@@ -159,13 +164,16 @@ export function HomePage() {
   return (
     <div className="HomePage">
       <img className="Logo" src={logo} />
+      <button className="ProfileButton" onClick={() => goToProfilePage()}>
+        Profile
+      </button>
       <button className="CartButton" onClick={() => goToCartPage()}>
         Cart
       </button>
       {user ? (
-        <button className="ProfileButton" onClick={() => goToProfilePage()}>
-          Profile
-        </button>
+      <button className="SignOutButton" onClick={signout}>
+        Sign Out
+      </button>
     ) : (
       <button className="SignInButton" onClick={goToSignInPage}>
         Sign In

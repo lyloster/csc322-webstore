@@ -25,7 +25,7 @@ export function CartPage() {
   const [userData, setUserData] = useState(null);
   const [wallet, setWallet] = useState(0);
   const [isEmptyCart, setIsEmptyCart] = useState(false);
-  const [buildIdsOnReturn, setBuildIdsOnReturn] = useState();
+  const [buildIdsOnReturn, setBuildIdsOnReturn] = useState(buildIds);
   const [isPurchaseComplete, setPurchaseComplete] = useState(false);
   //routing
   const navigate = useNavigate();
@@ -38,10 +38,9 @@ export function CartPage() {
   //load map with all builds
   const allBuilds = BuildsInStore();
 
-
   useEffect(() => {
     //check if cart is empty
-    if (buildIds === undefined) {
+    if (buildIds === undefined || buildIds === null) {
         setIsEmptyCart(true);
         return;
       }
@@ -68,7 +67,7 @@ export function CartPage() {
     setItems(addedItems);
     setTotal(totalPrice.toFixed(2));
     setIsEmptyCart(false);
-    setBuildIdsOnReturn(buildIds);
+    setBuildIdsOnReturn('');
   }, [allBuilds, buildIds]);
 
   //start db
@@ -143,25 +142,28 @@ export function CartPage() {
   }
 };
 
-if (isEmptyCart) {
-  return (
-    <div className="CartPage">
-      <img className="Logo" src={logo} />
-      <h2> Your cart</h2>
-      <div>
-        <h3>Cart is Empty &#x2639;</h3>
+const emptyCartCheck = () => {
+  if (isEmptyCart) {
+    return (
+      <div className="CartPage">
+        <img className="Logo" src={logo} />
+        <h2> Your cart</h2>
+        <div>
+          <h3>Cart is Empty &#x2639;</h3>
+        </div>
+        <footer>
+          <p>© 2023 A&K Custom PC</p>
+        </footer>
       </div>
-      <footer>
-        <p>© 2023 A&K Custom PC</p>
-      </footer>
-    </div>
-  );
+    );
+  }
 }
 
+//render element if purchase is complete
 if (isPurchaseComplete) {
   return (
     <div className="CartPage">
-      <img className="Logo" src={logo} />
+      <img className="Logo" src={logo} onCanPlay={handleClick_Home}/>
       <h2> Your cart</h2>
       <div>
         <h3>Thank you for your purchase, {name} &#x1F600;! </h3>
@@ -177,13 +179,14 @@ if (isPurchaseComplete) {
 return (
   <div className="CartPage">
     <img className="Logo" src={logo} onClick={handleClick_Home} />
-    <h2> {name} cart</h2>
+    <h2> {name}'s cart</h2>
 
     <div>
       {items.map((item, index) => {
         return (
           <div className="card-cart" key={index}>
-            <Build build={item} />
+            {item !== null ? <Build build={item} /> : emptyCartCheck() }
+            
           </div>
         );
       })}
