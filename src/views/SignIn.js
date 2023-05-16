@@ -51,7 +51,7 @@ export function SignIn() {
         console.log("User not found");
       }
 
-      if (role === "customer" && accountstatus === "open") {
+      if (role === "customer" && accountstatus === "active") {
         navigate("/customer");
       }
       if (role === "owner") {

@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 //db
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, collection, getDocs } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 //routing
 import { useNavigate } from 'react-router-dom';
@@ -31,6 +31,7 @@ export function CustomerPage() {
   const [warnings, setWarnings] = useState('');
   const [wallet, setWallet] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [builds, setBuilds] = useState([]);
 
   const returnHome = () => {
     navigate('/');
@@ -42,6 +43,16 @@ export function CustomerPage() {
 
   const goToAddBalancePage = () => {
     navigate('/customer/addBalance');
+  };
+
+  const signOutUser = () => {
+    signOut(auth).then(() => {
+      // Sign-out successful.
+      navigate('/');
+    }).catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
   };
 
   useEffect(() => {
@@ -87,13 +98,6 @@ export function CustomerPage() {
 
   }, [user, db]);
 
-  // Wrap the code block inside an async function
-  const closeAccount = async () => {
-    const userDocRef = doc(db, "users", user.uid);
-    const userDocSnap = await getDoc(userDocRef);
-    await updateDoc(userDocRef, { account_status: "closed" }, { merge: true });
-  };
-
   if (!isLoading && wallet === 0) {
     alert("Your wallet cannot be empty. Please add some money.")
     navigate('/customer/addBalance');
@@ -103,6 +107,29 @@ export function CustomerPage() {
     alert("Your account will be closed due to too many warnings. Please see a store employee in person to complete account closure.");
     closeAccount();
   }
+
+  // Wrap the code block inside an async function
+  const closeAccount = async () => {
+    const userDocRef = doc(db, "users", user.uid);
+    const userDocSnap = await getDoc(userDocRef);
+    await updateDoc(userDocRef, { account_status: "closed" }, { merge: true });
+    signOutUser();
+
+  };
+
+  const getBuilds = async () => {
+    const getBuildsRef = collection(db, "builds");
+    const getBuildsSnapshot = await getDocs(getBuildsRef);
+    const getBuilds = [];
+    getBuildsSnapshot.forEach((doc) => {
+      getBuilds.push({ uid: doc.id, ...doc.data() });
+    });
+      setBuilds(getBuilds);
+  };
+
+  useEffect(() => {
+    getBuilds();
+  }, [db]);
 
   return (
     <div className="CustomerPage">
@@ -149,15 +176,17 @@ export function CustomerPage() {
 
         </div>
 
-        <div className="Purchase">
+        {builds.map((user) => (
+          <div key={user.uid} className="Purchase">
 
-          <p>Order ID: 1</p>
-          <p>Date Completed: 4/20/2023</p>
-          <p>Order Details: Player One x 1</p>
-          <p>Price: $3400.56</p>
-          <button className="ViewButton">View Details</button>
+            <p>Order ID: 1</p>
+            <p>Date Completed: {user.date}</p>
+            <p>Order Details: {user.description}</p>
+            <p>Price: ${user.total}</p>
+            <button className="ViewButton">View Details</button>
 
-        </div>
+          </div>
+        ))}
 
         {/*
         <footer>
