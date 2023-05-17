@@ -25,6 +25,7 @@ export function CustomerPage() {
 
   const auth = getAuth();
   const db = getFirestore();
+  const userId = auth.currentUser;
 
   const [name, setName] = useState('');
   const [compliments, setCompliments] = useState('');
@@ -98,6 +99,15 @@ export function CustomerPage() {
 
   }, [user, db]);
 
+  // Wrap the code block inside an async function
+  const closeAccount = async () => {
+    const userDocRef = doc(db, "users", user.uid);
+    const userDocSnap = await getDoc(userDocRef);
+    await updateDoc(userDocRef, { account_status: "closed" }, { merge: true });
+    signOutUser();
+
+  };
+
   if (!isLoading && wallet === 0) {
     alert("Your wallet cannot be empty. Please add some money.")
     navigate('/customer/addBalance');
@@ -108,21 +118,12 @@ export function CustomerPage() {
     closeAccount();
   }
 
-  // Wrap the code block inside an async function
-  const closeAccount = async () => {
-    const userDocRef = doc(db, "users", user.uid);
-    const userDocSnap = await getDoc(userDocRef);
-    await updateDoc(userDocRef, { account_status: "closed" }, { merge: true });
-    signOutUser();
-
-  };
-
   const getBuilds = async () => {
     const getBuildsRef = collection(db, "builds");
     const getBuildsSnapshot = await getDocs(getBuildsRef);
     const getBuilds = [];
     getBuildsSnapshot.forEach((doc) => {
-      getBuilds.push({ uid: doc.id, ...doc.data() });
+        getBuilds.push({ uid: doc.id, ...doc.data() });
     });
       setBuilds(getBuilds);
   };
